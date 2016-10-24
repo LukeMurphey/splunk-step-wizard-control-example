@@ -20,16 +20,11 @@ define([
         className: 'StepControlWizardExample',
 
         /**
-         * Setup the defaults
+         * Initialize the class.
+         * 
+         * For the steps, we need to instantiate a model with the steps
          */
-        defaults: {
-        	
-        },
-
         initialize: function() {
-            // Apply the defaults
-            this.options = _.extend({}, this.defaults, this.options);
-            
             // Make the model that will store the steps
             this.steps = new Backbone.Collection();
             
@@ -51,7 +46,7 @@ define([
         },
         
         /**
-         * Create a step.
+         * This is a helper function to create a step.
          */
         createStep: function(step) {
             var newStep = {
@@ -67,6 +62,7 @@ define([
                 	
                     var promise = $.Deferred();
                     
+                    // Based on the validation action, reject or resolve the promise accordingly to let the UI know if the user should be allowed to go to the next step
                     if(this.validateStep(selectedModel, isSteppingNext)){
                     	promise.resolve();
                     }
@@ -74,40 +70,7 @@ define([
                     	promise.reject();
                     }
                     
-                    
-                    /*
-                    if (isSteppingNext) {
-                        updatedSearchPromise = view.onNext();
-                    } else {
-                        updatedSearchPromise = view.onPrev();
-                    }
-                    
-                    $.when(updatedSearchPromise, view).then(function(updatedSearch, view) {
-                        promise.resolve();
-                    }.bind(this), function(msg) {
-                        promise.reject(msg);
-                    });
-                    */
-                    
-                    
                     return promise;
-                	
-                	/*
-                    var view = selectedModel.get('view');
-                    var promise = $.Deferred();
-                    var updatedSearch = null;
-                    if (isSteppingNext) {
-                        updatedSearchPromise = view.onNext();
-                    } else {
-                        updatedSearchPromise = view.onPrev();
-                    }
-                    $.when(updatedSearchPromise, view).then(function(updatedSearch, view) {
-                        promise.resolve();
-                    }.bind(this), function(msg) {
-                        promise.reject(msg);
-                    });
-                    return promise;
-                    */
                 }.bind(this),
             };
 
