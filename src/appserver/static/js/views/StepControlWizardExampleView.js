@@ -26,27 +26,6 @@ define([
         	
         },
 
-        events: {
-            'click .btn-next': 'goNext',
-            'click .btn-prev': 'goPrev',
-            'click .btn-finalize': 'goDone',
-        },
-
-        goNext: function(e) {
-            e.preventDefault();
-            $('.nav-buttons .next-button', this.$el).click();
-        },
-
-        goPrev: function(e) {
-            e.preventDefault();
-            $('.nav-buttons .previous-button', this.$el).click();
-        },
-
-        goDone: function(e) {
-            e.preventDefault();
-            this.trigger('sync');
-        },
-
         initialize: function() {
             // Apply the defaults
             this.options = _.extend({}, this.defaults, this.options);
