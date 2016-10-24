@@ -227,7 +227,7 @@ define([
             // Initialize the steps model
             this.initializeSteps();
             
-            // Create the step wizard and set the initial step as the "bread" step
+            // Create the step wizard and set the initial step as the "ingredients" step
             this.setupStepWizard('ingredients');
             
         },
