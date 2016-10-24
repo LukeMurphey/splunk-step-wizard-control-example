@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<form script="step_control_wizard.js" >
+	<label>Step Control Wizard Example</label>
+		
+	<row>
+		<html>
+			<div id="step_control_wizard_holder"></div>
+		</html>
+	</row>
+</form>
