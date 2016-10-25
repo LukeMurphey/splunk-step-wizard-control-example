@@ -1,3 +1,22 @@
+/**
+ * This view illustrates how to use the StepWizardControl in SplunkJS. To use this control in a SplunkJS view of your own, you will need to:
+ * 
+ * In your HTML:
+ *   1) Add the "wizard-content" class to the DIV tag of each page of the wizard
+ *   2) Add an unique ID for the DIV tag of each page of the wizard (so that each wizard page can be uniquely referenced)
+ *   3) Create a DIV tag with a class or "wizard-content" for where you want the wizard controls to appear
+ *   
+ * In your Javascript view:
+ *   4) Make sure to add StepWizardControl to your require statement
+ *   5) Copy in the createStep() function from this class
+ *   6) Create a function that will populate the steps; much like the initializeSteps() function in this example
+ *   7) Modify your render() call such that it initializes the steps; e.g. initializeSteps() in this example
+ *   8) Modify your render() call such that it creates the step wizard using the setupStepWizard() function with the first argument being the step (based on whatever you named it via the "value" attribute) you want the wizard to start in. 
+ *		Note: setupStepWizard() must be called after you initialize the steps
+ */
+
+
+
 require.config({
     paths: {
         "text": "../app/step_control_wizard/js/lib/text"
@@ -49,6 +68,13 @@ define([
          * This is a helper function to create a step.
          */
         createStep: function(step) {
+        	
+            // Make the model that will store the steps if it doesn't exist yet
+        	if(this.steps === undefined){
+        		this.steps = new Backbone.Collection();
+        	}
+            
+        	// This is the instance of your new step
             var newStep = {
                 label: _(step.label).t(),
                 value: step.value,
@@ -208,6 +234,9 @@ define([
               // Render the step wizard
               $('#step-control-wizard', this.$el).append(this.stepWizard.render().el);
               
+              // Hide all of the existing wizard views
+              $(".wizard-content", this.$el).hide();
+              
               // Go the initial step: find it first
               var initialStep = this.steps.find(function(step) {
                   return step.get('value') == initialStep;
@@ -227,9 +256,6 @@ define([
         	
         	// Apply the template
             this.$el.html(StepControlExampleTemplate);
-            
-            // Hide the wizard content views; the step wizard will show them when necessary
-            $(".wizard-content", this.$el).hide();
             
             // Initialize the steps model
             this.initializeSteps();
