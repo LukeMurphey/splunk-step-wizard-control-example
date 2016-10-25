@@ -62,15 +62,22 @@ define([
                 	
                     var promise = $.Deferred();
                     
+                    // Get the response from the validation attempt
+                    var validation_response = this.validateStep(selectedModel, isSteppingNext);
+                    
                     // Based on the validation action, reject or resolve the promise accordingly to let the UI know if the user should be allowed to go to the next step
-                    if(this.validateStep(selectedModel, isSteppingNext)){
+                    if(validation_response === true){
                     	promise.resolve();
                     }
-                    else{
+                    else if(validation_response === false){
                     	promise.reject();
+                    }
+                    else{
+                    	return validation_response; // This is a promise
                     }
                     
                     return promise;
+                    
                 }.bind(this),
             };
 
