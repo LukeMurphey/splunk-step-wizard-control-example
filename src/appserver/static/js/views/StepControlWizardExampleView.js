@@ -224,7 +224,7 @@ define([
                   enabled: false,
               });
               
-              // Create the step wizar control
+              // Create the step wizard control
               this.stepWizard = new StepWizardControl({
                   model: wizard,
                   modelAttribute: 'currentStep',
