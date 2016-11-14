@@ -4,15 +4,17 @@
  * In your HTML:
  *   1) Add the "wizard-content" class to the DIV tag of each page of the wizard
  *   2) Add an unique ID for the DIV tag of each page of the wizard (so that each wizard page can be uniquely referenced)
- *   3) Create a DIV tag with a class or "wizard-content" for where you want the wizard controls to appear
+ *   3) Create a DIV tag with an ID of "step-control-wizard" for where you want the wizard controls to appear
  *   
  * In your Javascript view:
  *   4) Make sure to add StepWizardControl to your require statement
- *   5) Copy in the createStep() function from this class
+ *   5) Copy in the createStep() and setupStepWizard() functions from this class
  *   6) Create a function that will populate the steps; much like the initializeSteps() function in this example
  *   7) Modify your render() call such that it initializes the steps; e.g. initializeSteps() in this example
  *   8) Modify your render() call such that it creates the step wizard using the setupStepWizard() function with the first argument being the step (based on whatever you named it via the "value" attribute) you want the wizard to start in. 
  *		Note: setupStepWizard() must be called after you initialize the steps
+ *      Note: make sure to call setupStepWizard() with the correct initial step; otherwise, you will get an error
+ *   9) Optionally, make a validateStep() function to control whether the user can go to the next step. See validateStep() in this example.
  */
 
 
@@ -88,8 +90,12 @@ define([
                 	
                     var promise = $.Deferred();
                     
-                    // Get the response from the validation attempt
-                    var validation_response = this.validateStep(selectedModel, isSteppingNext);
+                    // Get the response from the validation attempt (if a validateStep function is defined)
+                    var validation_response = true;
+                    
+                    if(this.hasOwnProperty('validateStep')){
+                    	validation_response = this.validateStep(selectedModel, isSteppingNext);
+                    }
                     
                     // Based on the validation action, reject or resolve the promise accordingly to let the UI know if the user should be allowed to go to the next step
                     if(validation_response === true){
@@ -117,8 +123,11 @@ define([
         	
         	var c = 0;
         	
-            // Create the steps
+            // Make the model that will store the steps
+            this.steps = new Backbone.Collection();
         	
+            // Create the steps
+            
         	// Step 1
             this.steps.add(this.createStep({
                 label: 'Ingredients',
