@@ -93,7 +93,7 @@ define([
                     // Get the response from the validation attempt (if a validateStep function is defined)
                     var validation_response = true;
                     
-                    if(this.hasOwnProperty('validateStep')){
+                    if(typeof this.validateStep !== undefined){
                     	validation_response = this.validateStep(selectedModel, isSteppingNext);
                     }
                     
